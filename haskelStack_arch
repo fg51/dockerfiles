@@ -7,4 +7,5 @@ ARG mirrorlist="/etc/pacman.d/mirrorlist"
 RUN set -x && \
     echo "Server = http://ftp.jaist.ac.jp/pub/Linux/ArchLinux/\$repo/os/\$arch" > ${mirrorlist} && \
     echo "Server = http://ftp.tsukuba.wide.ad.jp/Linux/archlinux/\$repo/os/\$arch" >> ${mirrorlist} && \
-    pacman -Syu --noconfirm stack ghc-static
+    pacman -Syu --noconfirm stack ghc-static && \
+    stack config set system-ghc --global true
