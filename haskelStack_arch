@@ -3,12 +3,17 @@ FROM base/archlinux
 MAINTAINER kflange <zknsftk1msrk@gmail.com>
 
 ARG mirrorlist="/etc/pacman.d/mirrorlist"
-ARG pacmanconf
+ARG pacmanconf="/etc/pacman.conf"
 
 RUN set -x && \
     echo "Server = http://ftp.jaist.ac.jp/pub/Linux/ArchLinux/\$repo/os/\$arch" > ${mirrorlist} && \
     echo "Server = http://ftp.tsukuba.wide.ad.jp/Linux/archlinux/\$repo/os/\$arch" >> ${mirrorlist} && \
-    echo "[haskell-core]" >> ${pacmanconf}
-    echo "Server = http://xsounds.org/~haskell/core/\$arch" >> ${pacmanconf}
-    pacman -Syu haskell-stack && \
+    sed -ie "/^\[extra\]/i \[haskell\-core\]" ${pacmanconf} && \
+    sed -ie "/^\[extra\]/i Server = http:\/\/xsounds.org\/~haskell\/core\/\$arch" ${pacmanconf} && \
+    pacman-key -r 4209170B && \
+    pacman-key --lsign-key 4209170B && \
+    pacman -Syu --noconfirm && \
+    pacman -Syu haskell-stack --noconfirm && \
     stack config set system-ghc --global true
+
+# sed -ie "/^\[extra\]i \[haskell-core\]" ${pacmanconf} && \
