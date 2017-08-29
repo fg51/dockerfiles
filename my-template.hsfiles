@@ -32,6 +32,7 @@ test-suite a-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
+  other-modules:       SampleSpec
   build-depends:       base
                      , QuickCheck
                      , hspec
